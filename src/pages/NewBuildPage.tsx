@@ -8,6 +8,7 @@
  */
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import { previewBuild } from "@/features/preview/api";
 import { validateSpec } from "@/features/validation/api";
 import { buildSpecSchema, exportFormatSchema } from "@/shared/lib/schemas";
@@ -150,6 +151,9 @@ interface ValidationState {
  * @returns 마법사 UI.
  */
 export function NewBuildPage() {
+  // /builds/:buildId/edit 로 진입한 경우(편집 모드). 기존 스펙 로드는 Builder 연동(#29)
+  // 이후 지원하므로, 지금은 안내만 표시한다.
+  const { buildId } = useParams();
   const [step, setStep] = useState(0);
   const [preview, setPreview] = useState<PreviewState>({ status: "idle", rows: [], schema: {} });
   const [validation, setValidation] = useState<ValidationState>({
@@ -169,7 +173,8 @@ export function NewBuildPage() {
   const values = watch();
   const specPreview = useMemo(() => toBuildSpec(values), [values]);
 
-  const draftStatus = validation.isValid ? "validated" : isDirty ? "dirty" : "new";
+  // 편집 후에는 검증 통과 표시(validated)보다 dirty가 우선이어야 한다(실제 편집 상태 반영).
+  const draftStatus = isDirty ? "dirty" : validation.isValid ? "validated" : "new";
 
   async function goNext() {
     const fields = STEP_FIELDS[step];
@@ -221,6 +226,15 @@ export function NewBuildPage() {
         description="데이터 소스, 파라미터, 출력 형식을 단계별로 설정합니다."
         actions={<StatusBadge status={draftStatus} />}
       />
+
+      {buildId ? (
+        <Card variant="dashed" className="p-4">
+          <p className="text-sm text-zinc-700 dark:text-zinc-200">
+            기존 빌드 <span className="font-medium">{buildId}</span> 편집은 Builder 연동(#29) 후
+            지원됩니다. 지금은 새 빌드로 작성됩니다.
+          </p>
+        </Card>
+      ) : null}
 
       <Card>
         <Stepper steps={STEPS} current={step} onStepClick={setStep} />

@@ -18,10 +18,10 @@ export const recordSchema = z.record(z.string(), z.string());
 
 /** 단일 원본 데이터 참조가 가져야 할 필드를 검증하는 스키마 */
 export const sourceRefSchema = z.object({
-  provider: z.string().min(1, "Provider is required."),
-  dataset: z.string().min(1, "Dataset is required."),
+  provider: z.string().min(1, "제공자를 입력해주세요."),
+  dataset: z.string().min(1, "데이터셋을 입력해주세요."),
   params: recordSchema,
-  alias: z.string().min(1, "Alias cannot be empty.").optional(),
+  alias: z.string().min(1, "별칭은 비워둘 수 없습니다.").optional(),
 });
 
 /** 결과물 export 대상 정의를 검증하는 스키마 */
@@ -32,11 +32,11 @@ export const exportTargetSchema = z.object({
 
 /** 새 빌드 작성 화면에서 생성하는 전체 스펙 구조를 검증하는 스키마 */
 export const buildSpecSchema = z.object({
-  datasetId: z.string().min(1, "Dataset ID is required."),
-  title: z.string().min(1, "Title is required."),
-  description: z.string().min(1, "Description is required."),
-  sources: z.array(sourceRefSchema).min(1, "At least one source is required."),
-  exports: z.array(exportTargetSchema).min(1, "Select at least one export format."),
+  datasetId: z.string().min(1, "데이터셋 ID를 입력해주세요."),
+  title: z.string().min(1, "제목을 입력해주세요."),
+  description: z.string().min(1, "설명을 입력해주세요."),
+  sources: z.array(sourceRefSchema).min(1, "소스를 최소 1개 추가해주세요."),
+  exports: z.array(exportTargetSchema).min(1, "출력 형식을 최소 1개 선택해주세요."),
   metadata: recordSchema,
 });
 
