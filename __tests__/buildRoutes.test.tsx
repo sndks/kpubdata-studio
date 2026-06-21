@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import type { ReactNode } from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { BuildArtifactsPage } from "@/pages/BuildArtifactsPage";
@@ -6,7 +7,7 @@ import { BuildDetailPage } from "@/pages/BuildDetailPage";
 import { BuildPublishPage } from "@/pages/BuildPublishPage";
 import { BuildRunPage } from "@/pages/BuildRunPage";
 
-function renderAt(path: string, element: React.ReactNode) {
+function renderAt(path: string, element: ReactNode) {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <Routes>
