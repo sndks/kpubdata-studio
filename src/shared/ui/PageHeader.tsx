@@ -47,7 +47,12 @@ export function PageHeader({
         ) : null}
         <h2 className="mt-2 text-3xl font-semibold tracking-tight">{title}</h2>
         {description ? (
-          <p className="mt-2 max-w-2xl text-zinc-600 dark:text-zinc-300">{description}</p>
+          // 문자열은 <p>로, 그 외 노드(블록 요소 가능)는 <div>로 렌더링해 DOM 중첩 오류를 막는다.
+          typeof description === "string" ? (
+            <p className="mt-2 max-w-2xl text-zinc-600 dark:text-zinc-300">{description}</p>
+          ) : (
+            <div className="mt-2 max-w-2xl text-zinc-600 dark:text-zinc-300">{description}</div>
+          )
         ) : null}
       </div>
       {actions ? <div className="flex items-center gap-2">{actions}</div> : null}

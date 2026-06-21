@@ -105,6 +105,10 @@ export function Stepper({
                 </span>
               </div>
             )}
+            {/* 완료/오류 상태를 스크린리더에 텍스트로 전달한다(시각 기호는 aria-hidden). */}
+            {state === "complete" || state === "error" ? (
+              <span className="sr-only">{state === "complete" ? "(완료)" : "(오류)"}</span>
+            ) : null}
             {index < steps.length - 1 ? (
               <span aria-hidden="true" className="h-px w-6 bg-zinc-300 dark:bg-zinc-700" />
             ) : null}
